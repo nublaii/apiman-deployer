@@ -1,6 +1,7 @@
 #!/bin/sh
 
-APIMAN_VERSION=1.2.6-SNAPSHOT
+APIMAN_VERSION=1.2.5.Final
+WILDFLY_VERSION=10.0.0.Final
 ELASTIC_VERSION=1.7.2
 
 echo "###############################################################"
@@ -69,18 +70,18 @@ then
   echo ""
   mkdir ~/apiman-keycloak-$APIMAN_VERSION
   cd ~/apiman-keycloak-$APIMAN_VERSION
-  curl http://downloads.jboss.org/wildfly/9.0.2.Final/wildfly-9.0.2.Final.zip -o wildfly-9.0.2.Final.zip
-  curl http://downloads.jboss.org/apiman/$APIMAN_VERSION/apiman-distro-wildfly9-$APIMAN_VERSION-overlay.zip -o apiman-distro-wildfly9-$APIMAN_VERSION-overlay.zip
-  unzip wildfly-9.0.2.Final.zip
-  unzip -o apiman-distro-wildfly9-$APIMAN_VERSION-overlay.zip -d wildfly-9.0.2.Final
-  cd wildfly-9.0.2.Final
+  curl http://downloads.jboss.org/wildfly/$WILDFLY_VERSION/wildfly-${WILDFLY_VERSION}.zip -o wildfly-${WILDFLY_VERSION}.zip
+  curl http://downloads.jboss.org/apiman/$APIMAN_VERSION/apiman-distro-wildfly10-$APIMAN_VERSION-overlay.zip -o apiman-distro-wildfly10-$APIMAN_VERSION-overlay.zip
+  unzip wildfly-${WILDFLY_VERSION}.zip
+  unzip -o apiman-distro-wildfly10-$APIMAN_VERSION-overlay.zip -d wildfly-${WILDFLY_VERSION}
+  cd wildfly-${WILDFLY_VERSION}
   rm -f standalone/deployments/apiman*
 
   echo "####################################################################"
   echo "# Installation complete. You can now start up Keycloak for apiman  #"
   echo "# with the following commands:                                     #"
   echo "#                                                                  #"
-  echo "    cd ~/apiman-keycloak-$APIMAN_VERSION/wildfly-9.0.2.Final"
+  echo "    cd ~/apiman-keycloak-$APIMAN_VERSION/wildfly-${WILDFLY_VERSION}"
   echo "    ./bin/standalone.sh -b 0.0.0.0 -c standalone-apiman.xml"
   echo "#                                                                  #"
   echo "####################################################################"
@@ -148,11 +149,11 @@ then
   echo ""
   mkdir ~/apiman-gateway-$APIMAN_VERSION
   cd ~/apiman-gateway-$APIMAN_VERSION
-  curl http://downloads.jboss.org/wildfly/9.0.2.Final/wildfly-9.0.2.Final.zip -o wildfly-9.0.2.Final.zip
-  curl http://downloads.jboss.org/apiman/$APIMAN_VERSION/apiman-distro-wildfly9-$APIMAN_VERSION-overlay.zip -o apiman-distro-wildfly9-$APIMAN_VERSION-overlay.zip
-  unzip wildfly-9.0.2.Final.zip
-  unzip -o apiman-distro-wildfly9-$APIMAN_VERSION-overlay.zip -d wildfly-9.0.2.Final
-  cd wildfly-9.0.2.Final
+  curl http://downloads.jboss.org/wildfly/${WILDFLY_VERSION}/wildfly-${WILDFLY_VERSION}.zip -o wildfly-${WILDFLY_VERSION}.zip
+  curl http://downloads.jboss.org/apiman/$APIMAN_VERSION/apiman-distro-wildfly10-$APIMAN_VERSION-overlay.zip -o apiman-distro-wildfly10-$APIMAN_VERSION-overlay.zip
+  unzip wildfly-${WILDFLY_VERSION}
+  unzip -o apiman-distro-wildfly10-$APIMAN_VERSION-overlay.zip -d wildfly-${WILDFLY_VERSION}
+  cd wildfly-${WILDFLY_VERSION}
   rm -f standalone/deployments/apiman-ds.xml
   rm -f standalone/deployments/apiman-es.war
   rm -f standalone/deployments/apiman.war
@@ -171,7 +172,7 @@ then
   echo "# Installation complete. You can now start up apiman : API Gateway #"
   echo "# with the following commands:                                     #"
   echo "#                                                                  #"
-  echo "    cd ~/apiman-gateway-$APIMAN_VERSION/wildfly-9.0.2.Final"
+  echo "    cd ~/apiman-gateway-$APIMAN_VERSION/wildfly-${WILDFLY_VERSION}"
   echo "    ./bin/standalone.sh -b 0.0.0.0 -c standalone-apiman.xml"
   echo "#                                                                  #"
   echo "####################################################################"
@@ -262,11 +263,11 @@ then
   echo ""
   mkdir ~/apiman-manager-$APIMAN_VERSION
   cd ~/apiman-manager-$APIMAN_VERSION
-  curl http://downloads.jboss.org/wildfly/9.0.2.Final/wildfly-9.0.2.Final.zip -o wildfly-9.0.2.Final.zip
-  curl http://downloads.jboss.org/apiman/$APIMAN_VERSION/apiman-distro-wildfly9-$APIMAN_VERSION-overlay.zip -o apiman-distro-wildfly9-$APIMAN_VERSION-overlay.zip
-  unzip wildfly-9.0.2.Final.zip
-  unzip -o apiman-distro-wildfly9-$APIMAN_VERSION-overlay.zip -d wildfly-9.0.2.Final
-  cd wildfly-9.0.2.Final
+  curl http://downloads.jboss.org/wildfly/${WILDFLY_VERSION}/wildfly-${WILDFLY_VERSION}.zip -o wildfly-${WILDFLY_VERSION}.zip
+  curl http://downloads.jboss.org/apiman/$APIMAN_VERSION/apiman-distro-wildfly10-$APIMAN_VERSION-overlay.zip -o apiman-distro-wildfly10-$APIMAN_VERSION-overlay.zip
+  unzip wildfly-${WILDFLY_VERSION}.zip
+  unzip -o apiman-distro-wildfly10-$APIMAN_VERSION-overlay.zip -d wildfly-${WILDFLY_VERSION}
+  cd wildfly-${WILDFLY_VERSION}
   rm -f standalone/deployments/apiman-es.war
   rm -f standalone/deployments/apiman-gateway-api.war
   rm -f standalone/deployments/apiman-gateway.war
@@ -280,28 +281,28 @@ then
   if [ "x$DATABASE_TYPE" = "x1" ]
   then
     HIBERNATE_DIALECT=org.hibernate.dialect.MySQL5Dialect
-    curl https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.33/mysql-connector-java-5.1.33.jar -o ~/apiman-manager-$APIMAN_VERSION/wildfly-9.0.2.Final/standalone/deployments/mysql-connector-java-5.1.33-bin.jar
-    cp ~/apiman-manager-$APIMAN_VERSION/wildfly-9.0.2.Final/apiman/sample-configs/apiman-ds_mysql.xml ~/apiman-manager-$APIMAN_VERSION/wildfly-9.0.2.Final/standalone/deployments/apiman-ds.xml 
-    sed -i "s/MYSQLSERVER/$DATABASE_HOST/g" ~/apiman-manager-$APIMAN_VERSION/wildfly-9.0.2.Final/standalone/deployments/apiman-ds.xml 
-    sed -i "s/3306/$DATABASE_PORT/g" ~/apiman-manager-$APIMAN_VERSION/wildfly-9.0.2.Final/standalone/deployments/apiman-ds.xml 
+    curl https://repo1.maven.org/maven2/mysql/mysql-connector-java/5.1.33/mysql-connector-java-5.1.33.jar -o ~/apiman-manager-$APIMAN_VERSION/wildfly-${WILDFLY_VERSION}/standalone/deployments/mysql-connector-java-5.1.33-bin.jar
+    cp ~/apiman-manager-$APIMAN_VERSION/wildfly-${WILDFLY_VERSION}/apiman/sample-configs/apiman-ds_mysql.xml ~/apiman-manager-$APIMAN_VERSION/wildfly-${WILDFLY_VERSION}/standalone/deployments/apiman-ds.xml 
+    sed -i "s/MYSQLSERVER/$DATABASE_HOST/g" ~/apiman-manager-$APIMAN_VERSION/wildfly-${WILDFLY_VERSION}/standalone/deployments/apiman-ds.xml 
+    sed -i "s/3306/$DATABASE_PORT/g" ~/apiman-manager-$APIMAN_VERSION/wildfly-${WILDFLY_VERSION}/standalone/deployments/apiman-ds.xml 
   elif [ "x$DATABASE_TYPE" = "x2" ]
   then
     HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
-    curl https://repo1.maven.org/maven2/org/postgresql/postgresql/9.3-1102-jdbc41/postgresql-9.3-1102-jdbc41.jar -o ~/apiman-manager-$APIMAN_VERSION/wildfly-9.0.2.Final/standalone/deployments/postgresql-9.3-1102.jdbc41.jar
-    cp ~/apiman-manager-$APIMAN_VERSION/wildfly-9.0.2.Final/apiman/sample-configs/apiman-ds_postgresql.xml ~/apiman-manager-$APIMAN_VERSION/wildfly-9.0.2.Final/standalone/deployments/apiman-ds.xml 
-    sed -i "s/POSTGRESQLSERVER/$DATABASE_HOST/g" ~/apiman-manager-$APIMAN_VERSION/wildfly-9.0.2.Final/standalone/deployments/apiman-ds.xml 
-    sed -i "s/5432/$DATABASE_PORT/g" ~/apiman-manager-$APIMAN_VERSION/wildfly-9.0.2.Final/standalone/deployments/apiman-ds.xml 
+    curl https://repo1.maven.org/maven2/org/postgresql/postgresql/9.3-1102-jdbc41/postgresql-9.3-1102-jdbc41.jar -o ~/apiman-manager-$APIMAN_VERSION/wildfly-${WILDFLY_VERSION}/standalone/deployments/postgresql-9.3-1102.jdbc41.jar
+    cp ~/apiman-manager-$APIMAN_VERSION/wildfly-${WILDFLY_VERSION}/apiman/sample-configs/apiman-ds_postgresql.xml ~/apiman-manager-$APIMAN_VERSION/wildfly-${WILDFLY_VERSION}/standalone/deployments/apiman-ds.xml 
+    sed -i "s/POSTGRESQLSERVER/$DATABASE_HOST/g" ~/apiman-manager-$APIMAN_VERSION/wildfly-${WILDFLY_VERSION}/standalone/deployments/apiman-ds.xml 
+    sed -i "s/5432/$DATABASE_PORT/g" ~/apiman-manager-$APIMAN_VERSION/wildfly-${WILDFLY_VERSION}/standalone/deployments/apiman-ds.xml 
   fi
-  sed -i "s/^apiman.hibernate.dialect=.*$/apiman.hibernate.dialect=$HIBERNATE_DIALECT/g" ~/apiman-manager-$APIMAN_VERSION/wildfly-9.0.2.Final/standalone/configuration/apiman.properties
-  sed -i "s/DBUSER/$DATABASE_USER/g" ~/apiman-manager-$APIMAN_VERSION/wildfly-9.0.2.Final/standalone/deployments/apiman-ds.xml 
-  sed -i "s/DBPASS/$DATABASE_PASSWORD/g" ~/apiman-manager-$APIMAN_VERSION/wildfly-9.0.2.Final/standalone/deployments/apiman-ds.xml 
+  sed -i "s/^apiman.hibernate.dialect=.*$/apiman.hibernate.dialect=$HIBERNATE_DIALECT/g" ~/apiman-manager-$APIMAN_VERSION/wildfly-${WILDFLY_VERSION}/standalone/configuration/apiman.properties
+  sed -i "s/DBUSER/$DATABASE_USER/g" ~/apiman-manager-$APIMAN_VERSION/wildfly-${WILDFLY_VERSION}/standalone/deployments/apiman-ds.xml 
+  sed -i "s/DBPASS/$DATABASE_PASSWORD/g" ~/apiman-manager-$APIMAN_VERSION/wildfly-${WILDFLY_VERSION}/standalone/deployments/apiman-ds.xml 
 
 
   echo "####################################################################"
   echo "# Installation complete. You can now start up apiman : API Manager #"
   echo "# with the following commands:                                     #"
   echo "#                                                                  #"
-  echo "    cd ~/apiman-manager-$APIMAN_VERSION/wildfly-9.0.2.Final"
+  echo "    cd ~/apiman-manager-$APIMAN_VERSION/wildfly-${WILDFLY_VERSION}"
   echo "    ./bin/standalone.sh -b 0.0.0.0 -c standalone-apiman.xml"
   echo "#                                                                  #"
   echo "####################################################################"
